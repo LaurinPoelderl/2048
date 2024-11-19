@@ -10,6 +10,10 @@ import java.util.List;
 public class Game2048Engine {
     private List<List<Integer>> board = null;
 
+    public Game2048Engine() {
+        init();
+    }
+
     public void init() {
         board = new LinkedList<>(Collections.nCopies(4,new LinkedList<>(Collections.nCopies(4,0))));
         //TODO: getRandomStartValues
@@ -19,23 +23,50 @@ public class Game2048Engine {
         return board;
     }
 
-    private void rotate90 (int arr[][])
+    private void rotate90 ()
     {
-        transpose (arr);
-        reverseRows (arr);
+        transpose ();
+        reverseRows ();
+    }
+
+    private void reverseRows() {
+        //TODO: CheckWidthAndHeightEqual
+        int n = board.size();
+        for (int i = 0; i < board.size(); i++){
+            for (int j = 0; j < board.size() / 2; j++){
+                int temp = board.get(i).get(j);
+                board.get(i).set(j, board.get(i).get(n - j - 1));
+                board.get(i).set(n - j - 1, temp);
+            }
+        }
+    }
+
+    private void transpose() {
+        //TODO: CheckWidthAndHeightEqual
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = i; j < board.get(0).size(); j++) {
+                int temp = board.get(j).get(i);
+                board.get(j).set(i, board.get(i).get(j));
+                board.get(i).set(j, temp);
+            }
+        }
     }
 
     public void moveTop() {
         board.get(0).set(0,1);
-        //TODO: shift90Degrees
+        rotate90();
         this.moveLeft();
-        //TODO: shift-90Degrees
+        rotate90();
+        rotate90();
+        rotate90();
     }
 
     public void moveDown() {
-        //TODO: shift-90Degrees
+        rotate90();
+        rotate90();
+        rotate90();
         this.moveLeft();
-        //TODO: shift90Degrees
+        rotate90();
     }
 
     public void moveLeft() {
@@ -43,8 +74,10 @@ public class Game2048Engine {
     }
 
     public void moveRight() {
-        //TODO: shift180Degrees
+        rotate90();
+        rotate90();
         this.moveLeft();
-        //TODO: shift180Degrees
+        rotate90();
+        rotate90();
     }
 }
