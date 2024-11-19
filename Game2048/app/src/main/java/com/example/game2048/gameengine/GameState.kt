@@ -9,3 +9,9 @@ data class GameState (
     ),
     val name: String = "no name"
 )
+
+{
+    fun toStringBaseClass(): String {
+        return super.toString()
+    }
+}
